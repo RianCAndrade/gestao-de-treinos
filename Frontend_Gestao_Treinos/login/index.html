@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestão de Treinos</title>
+  <link rel="stylesheet" href="style_login.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Gest Treinos</div>
+    <div class="nav-links">
+      <a id="linkcadastro" href="/Frontend_Gestao_Treinos/cadastro/cadastro.html">Cadastrar Usuario</a>
+      <a href="#">Sobre</a>
+      <a href="#">Serviços</a>
+      <a href="#">Contato</a>
+    </div>
+  </nav>
+
+  <!-- Login Box -->
+  <div class="login-box">
+    <h2>Login</h2>
+    <form id="formlogin" method="post">
+      <div class="user-box">
+        <input type="text" name="email" id="email" required>
+        <label>Email</label>
+      </div>
+      <div class="user-box">
+        <input type="password" name="password" id="senha" required>
+        <label>Senha</label>
+      </div>
+
+      <button type="submit" class="a">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Login
+      </button>
+    </form>
+  </div>
+  <script src="script_login.js"></script>
+</body>
+</html>
