@@ -6,9 +6,9 @@ use App\Service\LoginService;
 use Illuminate\Http\Request;
 use Exception;
 
-use function Termwind\render;
+// use function Termwind\render;
 
-class LoginController extends Controller 
+class AuthController extends Controller 
 {
     
     public function __construct(
