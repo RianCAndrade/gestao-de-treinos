@@ -14,20 +14,20 @@ class CadastroController extends Controller
         private CadastroService $cadastroService
     ){}
     
-    public function getregister()
-    {
-        return view("/cadastro");
-    }
+    // public function getregister()
+    // {
+    //     return view("/cadastro");
+    // }
     
     public function register(Request $request)
     {
         try {
             $validated = $request->validate([
-            "nome" => "required|string|max:255",
-            "idade" => "required|integer|min:0|max:255",
-            "email" => "required|email|unique:pessoa_treino,email",
-            "senha" => "required|string|min:6",
-            "cpf" => ["required", "string", "unique:pessoa_treino,cpf", 
+                "nome" => "required|string|max:255",
+                "idade" => "required|integer|min:0|max:255",
+                "email" => "required|email|unique:pessoa_treino,email",
+                "senha" => "required|string|min:6",
+                "cpf" => ["required", "string", "unique:pessoa_treino,cpf", 
             function($attribute, $value, $fail){
 
                 // Validação basica de cpf
@@ -48,7 +48,7 @@ class CadastroController extends Controller
             }
             
             return response()->json([
-                "sucesso" => "sucesso na requesição",
+                "sucesso" => "sucesso na requisição",
                 "data" => $pessoaTreino
             ], 201);
         } catch (Exception $e) {

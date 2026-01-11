@@ -32,6 +32,11 @@ class Kernel extends HttpKernel
         ],
         'api' => [
             EnsureFrontendRequestsAreStateful::class,
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            VerifyCsrfToken::class,
             'throttle:api',
             SubstituteBindings::class,
         ],

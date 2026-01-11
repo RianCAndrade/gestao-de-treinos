@@ -6,8 +6,10 @@ use App\Service\LoginService;
 use Illuminate\Http\Request;
 use Exception;
 
+use function Termwind\render;
 
-class LoginController extends Controller {
+class LoginController extends Controller 
+{
     
     public function __construct(
         private LoginService $loginService
@@ -15,7 +17,7 @@ class LoginController extends Controller {
 
     // public function index(Request $request)
     // {
-    //     return render("/login");
+    //     return render("/conteudo");
     // }
 
     public function login(Request $request)
@@ -29,14 +31,17 @@ class LoginController extends Controller {
 
             $result = $this->loginService->authenticate($validated);
             
-            if(!$result){
+            if(!$result["sucesso"]){
                 return response()->json([
-                    "mensagem" => $result["mensagem"]
+                    "error" => "Credenciais Invalidas",
+                    "mensagem" => "Email ou senha incorretos"
                 ], 401);
             }
+
+            $request->session()->regenerate();
             
             return response()->json([
-                "mensagem" => $result,
+                "mensagem" => "Login realizado com sucesso",
                 "data" => $result["user"]
             ]);
         } catch (Exception $e) {

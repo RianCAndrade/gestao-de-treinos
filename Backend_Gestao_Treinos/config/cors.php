@@ -1,10 +1,10 @@
 <?php 
 
 return [
+    //  'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'logout', 'register'],
     'paths' => ['api/*', 'sanctum/csrf-cookie'], // Rotas afetadas
     'allowed_methods' => ['*'], // Métodos permitidos (GET, POST, etc)
     'allowed_origins' => [
-        'http://localhost:5500',
         'http://127.0.0.1:5500'
     ], // URLs de origem permitidas
     'allowed_headers' => ['*'], // Cabeçalhos permitidos

@@ -18,10 +18,16 @@ document.getElementById("formcadastro").addEventListener("submit", function(e){
         },
         body:JSON.stringify(data)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            alert("Email ou outros campos invalidos");
+            throw new Error("Falha ao cadastrar");
+        }
+        return response.json();
+    })
     .then(data => {
-        console.log("sucesso:", data);
-        window.location.href="index.html";
+        // console.log("sucesso:", data);
+        window.location.href="/Frontend_Gestao_Treinos/login/index.html";
     })
     .catch(error => {
         console.error("Erro:", error)

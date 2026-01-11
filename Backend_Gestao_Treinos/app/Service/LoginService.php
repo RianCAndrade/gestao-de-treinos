@@ -25,12 +25,18 @@ class LoginService
                 ];
             }
 
-            if(!Hash::check($credenciais["senha"], $user->senha)){
+            if(!Hash::check($credenciais["senha"], $user->senha))
+            {
                 return [
                     "sucesso" => false,
                     "mensagem" => "senha errada tente novamente"
                 ];
             }
+
+            // if(Hash::check($credenciais["senha"], $user->senha))
+            // {
+            //     return 
+            // }
 
 
             Auth::login($user);

@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 
 class ConteudoController extends Controller
 {
-    public function conteudo(){
+    // public function conteudo(){
 
 
-        return view("conteudo");
-    }
+    //     return view("conteudo");
+    // }
 }
