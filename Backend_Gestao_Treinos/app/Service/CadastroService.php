@@ -21,7 +21,9 @@ class CadastroService
             return $this->cadastroRepository->create($data);
 
         } catch (ModelNotFoundException $e) {
-            return null;
+            return [
+                "error" => $e->getMessage()
+            ];
         }
     }
 

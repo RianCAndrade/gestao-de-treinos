@@ -2,22 +2,26 @@
 
 namespace App\Service;
 
-use App\Repository\LoginRepository;
+use App\Repository\AuthRepository;
+use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class LoginService 
+use function Symfony\Component\Clock\now;
+
+class AuthService 
 {
     public function __construct(
-        private LoginRepository $loginRepository
+        private AuthRepository $loginRepository
     ) {}
 
     public function authenticate(array $credenciais)
     {
         try {
-            $user = $this->loginRepository->findByEmail($credenciais['email']);
 
+           $user = $this->loginRepository->findByEmail($credenciais['email']);
+            // dd($user);
             if(!$user){
                 return [
                     "sucesso" => false,
@@ -25,30 +29,29 @@ class LoginService
                 ];
             }
 
-            if(!Hash::check($credenciais["senha"], $user->senha))
-            {
+
+            // Verifica a senha - se no banco é "senha", use "senha"
+            if(!Hash::check($credenciais["senha"], $user->senha)) {
                 return [
                     "sucesso" => false,
-                    "mensagem" => "senha errada tente novamente"
+                    "mensagem" => "Senha incorreta"
                 ];
             }
 
-            // if(Hash::check($credenciais["senha"], $user->senha))
-            // {
-            //     return 
-            // }
-
-
-            Auth::login($user);
+            $token = $user->createToken("api-token-token")->plainTextToken;
+            // dd($token);
 
             return [
                 "sucesso" => true,
-                "user" => $user
+                "user" => $user,
+                "token" => $token
             ];
+            
         } catch (ModelNotFoundException $e) {
             return [
                 "sucesso" => false,
-                "mensagem" => "Erro de autenticação"
+                "mensagem" => "Erro de autenticação",
+                "error" => $e->getMessage()
             ];
         }
     }

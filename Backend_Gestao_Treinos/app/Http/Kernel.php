@@ -31,14 +31,10 @@ class Kernel extends HttpKernel
             VerifyCsrfToken::class,
         ],
         'api' => [
-            EnsureFrontendRequestsAreStateful::class,
-            EncryptCookies::class,
-            AddQueuedCookiesToResponse::class,
-            StartSession::class,
-            ShareErrorsFromSession::class,
-            VerifyCsrfToken::class,
-            'throttle:api',
-            SubstituteBindings::class,
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
 

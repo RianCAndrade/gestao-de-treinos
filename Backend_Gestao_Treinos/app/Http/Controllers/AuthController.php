@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\LoginService;
+use App\Service\AuthService;
 use Illuminate\Http\Request;
 use Exception;
 
@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     
     public function __construct(
-        private LoginService $loginService
+        private AuthService $loginService
     ){}
 
     // public function index(Request $request)
@@ -30,7 +30,8 @@ class AuthController extends Controller
             ]);
 
             $result = $this->loginService->authenticate($validated);
-            
+
+
             if(!$result["sucesso"]){
                 return response()->json([
                     "error" => "Credenciais Invalidas",
@@ -38,11 +39,12 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $request->session()->regenerate();
-            
+            // $request->session()->regenerate();
             return response()->json([
+                "sucesso" => true,
                 "mensagem" => "Login realizado com sucesso",
-                "data" => $result["user"]
+                "token" => $result["token"],
+                "data" => $result["user"],
             ]);
         } catch (Exception $e) {
             return response()->json([

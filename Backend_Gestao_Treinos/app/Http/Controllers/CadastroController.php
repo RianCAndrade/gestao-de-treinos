@@ -14,11 +14,6 @@ class CadastroController extends Controller
         private CadastroService $cadastroService
     ){}
     
-    // public function getregister()
-    // {
-    //     return view("/cadastro");
-    // }
-    
     public function register(Request $request)
     {
         try {
@@ -27,19 +22,11 @@ class CadastroController extends Controller
                 "idade" => "required|integer|min:0|max:255",
                 "email" => "required|email|unique:pessoa_treino,email",
                 "senha" => "required|string|min:6",
-                "cpf" => ["required", "string", "unique:pessoa_treino,cpf", 
-            function($attribute, $value, $fail){
-
-                // Validação basica de cpf
-                if(strlen($value) !== 11){
-                    $fail("cpf deve ter 11 digitos");
-                }
-
-            }]
-        ]);
+                "cpf" => "required|string|unique:pessoa_treino,cpf"
+            ]);
+        // dd($validated);
 
             $pessoaTreino = $this->cadastroService->create($validated);
-            
             if (!$pessoaTreino){
                 return response()->json([
                     "erro" => "erro campo vazio",
@@ -48,7 +35,7 @@ class CadastroController extends Controller
             }
             
             return response()->json([
-                "sucesso" => "sucesso na requisição",
+                "sucesso" => true,
                 "data" => $pessoaTreino
             ], 201);
         } catch (Exception $e) {

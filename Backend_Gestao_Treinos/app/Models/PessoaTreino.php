@@ -4,12 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticateble;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Laravel\Sanctum\HasApiTokens;
 
 class PessoaTreino extends Authenticateble
 {
-    use HasFactory;
+    use HasApiTokens;
 
     protected $table = "pessoa_treino";
 
@@ -19,5 +18,9 @@ class PessoaTreino extends Authenticateble
         "email",
         "senha",
         "cpf",
+    ];
+
+    protected $hidden = [
+        "senha"
     ];
 }

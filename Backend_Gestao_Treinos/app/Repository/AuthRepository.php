@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Models\PessoaTreino;
 use Illuminate\Database\Eloquent\Model;
 
-class LoginRepository 
+class AuthRepository 
 {
 
     public function __construct(

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Service\LogoutService;
-use Symfony\Component\HttpFoundation\Request;
+use Exception;
+use Illuminate\Http\Request;
 
 class LogoutController extends Controller
 {
@@ -13,6 +14,18 @@ class LogoutController extends Controller
 
     public function logout(Request $request)
     {
-        
+        try{
+            $result = $this->logoutService->logout($request);
+            // dd($result);
+            return response()->json([
+                "success" => $result["success"],
+                "message" => $result["message"]
+            ]);
+
+        } catch (Exception $e){
+            return [
+                "error" => $e->getMessage()
+            ];
+        }
     }
 }
