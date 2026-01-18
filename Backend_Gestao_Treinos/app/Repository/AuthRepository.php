@@ -2,24 +2,24 @@
 
 namespace App\Repository;
 
-use App\Models\PessoaTreino;
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Model;
 
 class AuthRepository 
 {
 
     public function __construct(
-        private PessoaTreino $pessoaTreino
+        private Usuario $usuario
     ){}
 
     // Busca por ID
     public function findByEmail(string $email): ?Model
     {
-        return $this->pessoaTreino->where("email",$email)->first();
+        return $this->usuario->where("email",$email)->first();
     }
 
     public function findById(int $id){
-        return $this->pessoaTreino->find($id);
+        return $this->usuario->find($id);
     }
 
     public function create(){
@@ -36,7 +36,7 @@ class AuthRepository
 
     public function getAll()
     {
-        return $this->pessoaTreino->all();
+        return $this->usuario->all();
     }   
 
 

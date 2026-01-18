@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
-use App\Models\PessoaTreino;
+use App\Models\Usuario;
 
 class LogoutRepository 
 {
-    public function logout(PessoaTreino $user)
+    public function logout(Usuario $user)
     {
         $user->currentAccessToken()?->delete();
     }

@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     
     public function __construct(
-        private AuthService $loginService
+        private AuthService $authService
     ){}
 
     // public function index(Request $request)
@@ -29,7 +29,7 @@ class AuthController extends Controller
                 "senha" => "required|min:6",
             ]);
 
-            $result = $this->loginService->authenticate($validated);
+            $result = $this->authService->authenticate($validated);
 
 
             if(!$result["sucesso"]){

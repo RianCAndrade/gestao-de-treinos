@@ -2,18 +2,17 @@
 
 namespace App\Repository;
 
-use App\Models\PessoaTreino;
+use App\Models\Usuario;
 
 class CadastroRepository
 {
     public function __construct(
-        private PessoaTreino $pessoaTreino
+        private Usuario $usuario
     ){}
-
 
     public function create(array $data)
     {
-        return $this->pessoaTreino->create($data);
+        return $this->usuario->create($data);
     }
 
     public function getById()

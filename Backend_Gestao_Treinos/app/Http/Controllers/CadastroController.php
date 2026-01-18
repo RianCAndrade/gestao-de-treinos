@@ -20,14 +20,14 @@ class CadastroController extends Controller
             $validated = $request->validate([
                 "nome" => "required|string|max:255",
                 "idade" => "required|integer|min:0|max:255",
-                "email" => "required|email|unique:pessoa_treino,email",
+                "email" => "required|email|unique:tb_usuarios,email",
                 "senha" => "required|string|min:6",
-                "cpf" => "required|string|unique:pessoa_treino,cpf"
+                "cpf" => "required|string|unique:tb_usuarios,cpf"
             ]);
         // dd($validated);
 
-            $pessoaTreino = $this->cadastroService->create($validated);
-            if (!$pessoaTreino){
+            $usuario = $this->cadastroService->create($validated);
+            if (!$usuario){
                 return response()->json([
                     "erro" => "erro campo vazio",
                     "data" => "sem dados"
@@ -36,7 +36,7 @@ class CadastroController extends Controller
             
             return response()->json([
                 "sucesso" => true,
-                "data" => $pessoaTreino
+                "data" => $usuario
             ], 201);
         } catch (Exception $e) {
             return response()->json([

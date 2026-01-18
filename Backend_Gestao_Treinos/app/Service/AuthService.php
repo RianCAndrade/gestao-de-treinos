@@ -13,14 +13,14 @@ use function Symfony\Component\Clock\now;
 class AuthService 
 {
     public function __construct(
-        private AuthRepository $loginRepository
+        private AuthRepository $authRepository
     ) {}
 
     public function authenticate(array $credenciais)
     {
         try {
 
-           $user = $this->loginRepository->findByEmail($credenciais['email']);
+           $user = $this->authRepository->findByEmail($credenciais['email']);
             // dd($user);
             if(!$user){
                 return [
@@ -39,7 +39,7 @@ class AuthService
             }
 
             $token = $user->createToken("api-token-token")->plainTextToken;
-            // dd($token);
+
 
             return [
                 "sucesso" => true,
