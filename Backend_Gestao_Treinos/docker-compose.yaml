@@ -1,0 +1,104 @@
+services:
+  # PHP-FPM + Laravel (SEU código - usa Dockerfile)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./storage:/var/www/html/storage
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: gest_treinos
+      DB_USERNAME: postgres
+      DB_PASSWORD: ogof
+      APP_ENV: local
+      APP_DEBUG: true
+    networks:
+      - laravel-network
+    depends_on:
+      - db
+
+  # Nginx (imagem pronta) - AGORA SIM!
+  nginx:
+    image: nginx:alpine
+    container_name: laravel_nginx
+    restart: unless-stopped
+    ports:
+      - "8001:80"      # ✅ HTTP na porta 8001
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/logs:/var/log/nginx
+    networks:
+      - laravel-network
+    depends_on:
+      - app
+
+  # PostgreSQL (imagem pronta)
+  db:
+    image: postgres:15-alpine
+    container_name: laravel_db
+    restart: unless-stopped
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_DB: gest_treinos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ogof
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - laravel-network
+
+  # Adminer para PostgreSQL
+  adminer:
+    image: adminer
+    container_name: laravel_adminer
+    restart: unless-stopped
+    ports:
+      - "8002:8080"    # ✅ Adminer na porta 8002
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    networks:
+      - laravel-network
+    depends_on:
+      - db
+
+  # Redis (cache) - opcional
+  redis:
+    image: redis:alpine
+    container_name: laravel_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - laravel-network
+
+  # Composer (para comandos manuais) - OPICIONAL
+  composer:
+    image: composer:latest
+    container_name: laravel_composer
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: ["composer", "--version"]  # Exemplo melhor
+    networks:
+      - laravel-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  laravel-network:
+    driver: bridge
