@@ -5,16 +5,16 @@ document.getElementById("formlogin").addEventListener("submit", async function(e
         email: document.getElementById("email").value,
         senha: document.getElementById("senha").value,
     }
-
+    // console.log(data);
     // Primeiro buscar o csrf cookie
-    await fetch('http://127.0.0.1:8000/sanctum/csrf-cookie', {
+    await fetch('http://localhost:8001/sanctum/csrf-cookie', {
         method: "GET",
         credentials: 'include'
     });
 
     const xsrf = decodeURIComponent(document.cookie.split('; ').find(c => c.startsWith('XSRF-TOKEN='))?.split('=')[1] || '');
 
-    await fetch("http://127.0.0.1:8000/api/login", {
+    await fetch("http://localhost:8001/api/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -38,17 +38,5 @@ document.getElementById("formlogin").addEventListener("submit", async function(e
         console.error("Erro:", error)
     })
 
-    // await fetch("http://127.0.0.1:8000/api/logout", {
-    //     method: "POST",
-    //     credentials: "include"
-    // })
 
-
-    // fetch("http://127.0.0.1:8000/api/login", {
-    //     method: "GET",
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     },
-    //     body:JSON.stringify(data)
-    // })
 })

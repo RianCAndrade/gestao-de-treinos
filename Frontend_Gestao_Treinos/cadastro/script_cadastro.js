@@ -10,15 +10,18 @@ document.getElementById("formcadastro").addEventListener("submit", function(e){
         senha: document.getElementById("senha").value,
         cpf: document.getElementById("cpf").value
     }
-
-    fetch("http://127.0.0.1:8000/api/cadastro", {
+    // console.log(data);
+    fetch("http://localhost:8001/api/cadastro", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Accept": "application/json",
         },
+        
         body:JSON.stringify(data)
     })
     .then(response => {
+        // console.log(response)
         if (!response.ok) {
             alert("Email ou outros campos invalidos");
             throw new Error("Falha ao cadastrar");

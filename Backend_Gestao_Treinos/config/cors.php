@@ -5,7 +5,8 @@ return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'], // Rotas afetadas
     'allowed_methods' => ['*'], // Métodos permitidos (GET, POST, etc)
     'allowed_origins' => [
-        'http://127.0.0.1:5500'
+
+        'http://localhost:5500'
     ], // URLs de origem permitidas
     'allowed_headers' => ['*'], // Cabeçalhos permitidos
     'exposed_headers' => [],
