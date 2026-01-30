@@ -17,6 +17,7 @@ class LogoutController extends Controller
         try{
             $result = $this->logoutService->logout($request);
             // dd($result);
+            
             return response()->json([
                 "success" => $result["success"],
                 "message" => $result["message"]

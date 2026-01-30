@@ -7,16 +7,20 @@
   <link rel="stylesheet" href="style_cadastro.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav>
-    <div class="logo">Gest Treinos 💪🏼</div>
-    <div class="nav-links">
-      <a id="linklogin" href="/Frontend_Gestao_Treinos/login/index.html">Login</a>
-      <a href="#">Sobre</a>
-      <a href="#">Serviços</a>
-      <a href="#">Contato</a>
-    </div>
-  </nav>
+	<nav class="navbar">
+		<div class="logo">Gest Treinos 💪🏼</div>
+
+		<button class="nav-toggle" aria-label="Abrir menu" type="button">
+			☰
+		</button>
+
+		<div class="nav-links">
+			<a id="linklogin" href="/Frontend_Gestao_Treinos/login/index.html">Login</a>
+			<a href="#">Sobre</a>
+			<a href="#">Serviços</a>
+			<a href="#">Contato</a>
+		</div>
+	</nav>
 
   <!-- Formulário de cadastro -->
   <div class="login-box">
@@ -49,10 +53,6 @@
       </div>
 
       <button type="submit" class="a">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
         Cadastrar
       </button>
     </form>

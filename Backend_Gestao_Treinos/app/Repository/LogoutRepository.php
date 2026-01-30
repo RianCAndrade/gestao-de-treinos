@@ -8,7 +8,7 @@ class LogoutRepository
 {
     public function logout(Usuario $user)
     {
-        $user->currentAccessToken()?->delete();
+        return $user->currentAccessToken()->delete();
     }
 
     
