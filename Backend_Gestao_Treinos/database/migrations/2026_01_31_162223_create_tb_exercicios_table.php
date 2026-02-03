@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('titulo');
             $table->text('descricao')->nullable();
-            $table->enum('tipo',['calistenia', 'musculacao']);
+            $table->foreignId('fk_modalidade')
+            ->constrained("tb_modalidades")
+            ->cascadeOnDelete();
             $table->enum('nivel',['Iniciante', 'Intermediario', 'avancado'])->nullable();
             $table->string('video_url')->nullable();
             $table->string('imagem_url')->nullable();

@@ -11,10 +11,16 @@ class Exercicio extends Model
     protected $fillable = [
         "titulo",
         "descricao",
-        "tipo",
+        "fk_modalidade",
         "nivel",
         "video_url",
         "imagem_url",
         "ativo",
     ];
+
+
+    public function modalidade()
+    {
+        return $this->belongsTo(Modalidade::class, 'fk_modalidade');
+    }
 }
