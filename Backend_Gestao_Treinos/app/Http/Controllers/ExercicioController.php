@@ -38,12 +38,9 @@ class ExercicioController
         
     }
 
-    public function getByModalidade(Request $request)
+    public function Modalidade(Request $request)
     {
         try {
-
-            // dd($request);
-            // $dados = $request->fk_modalidade
 
             $result = $this->exercicioService->getByModalidade($request);
 
@@ -63,5 +60,38 @@ class ExercicioController
                 "error" => $e->getMessage()
             ], 500);
         }
+    }
+
+
+    public function searchExercicio(Request $request)
+    {
+        try {
+            $search = $request->get('search');
+
+            $result = $this->exercicioService->searchExercicio($search);
+
+            if($result?->isEmpty()){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Nada encontrado"
+                ], 404);
+            }
+
+            return response()->json([
+                "success" => "valor encontrado",
+                "message" => $result
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                "message" => "Error inesperado",
+                "error" => $e->getMessage()
+            ], 500);
+        }
+
+    }
+
+    public function detalheModalidade()
+    {
+        
     }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tb_exercicios', function (Blueprint $table) {
             $table->id();
             $table->string('titulo');
+            $table->string('titulo_search')->index();
             $table->text('descricao')->nullable();
             $table->foreignId('fk_modalidade')
             ->constrained("tb_modalidades")

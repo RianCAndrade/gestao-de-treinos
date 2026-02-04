@@ -41,4 +41,11 @@ class ExercicioService
 
         return $result;
     }
+
+    public function searchExercicio($search)
+    {
+        $result = $this->exercicioRepository->searchExercicio($search);
+
+        return $result;
+    }
 }

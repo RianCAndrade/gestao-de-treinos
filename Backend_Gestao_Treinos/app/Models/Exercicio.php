@@ -17,7 +17,21 @@ class Exercicio extends Model
         "imagem_url",
         "ativo",
     ];
+    
+    protected static function booted()
+    {
+        static::saving(function ($model) {
+            $model->titulo_search = self::normalize($model->titulo);
+        });
+    }
 
+    private static function normalize(string $text): string
+    {
+        $text = mb_strtolower($text);
+        $text = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $text);
+        $text = preg_replace('/[^a-z0-9\s]/', '', $text);
+        return $text;
+    }
 
     public function modalidade()
     {

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Models\Exercicio;
+use GuzzleHttp\Psr7\Query;
 
 class ExercicioRepository 
 {
@@ -20,6 +21,22 @@ class ExercicioRepository
     public function findByModalidade($modalidade)
     {
         return $this->exercicio::where('fk_modalidade', $modalidade)->get();
+    }
+
+    public function searchExercicio(?string $search)
+    {
+        return $this->exercicio
+            ->when($search, function ($query) use ($search) {
+                $search = mb_strtolower($search);
+
+                // $query->whereRaw('LOWER(titulo) LIKE ?', ["%{$search}%"]);
+                // $query->where('titulo', 'ILIKE', "%{$search}%");
+                $search = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $search);
+
+                $query->where('titulo_search', 'like', "%{$search}%");
+            })
+            ->orderBy('titulo')
+            ->get();
     }
 
 }

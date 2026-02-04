@@ -19,8 +19,9 @@ Route::middleware(["auth:sanctum"])->group(function (){
     Route::post("/logout", [LogoutController::class, "logout"]);
 
     // Rotas exercicios
-    Route::get("/exercicio", [ExercicioController::class, "getExercicios"]);
-    Route::post("/exercicio/detalhe", [ExercicioController::class, "getByModalidade"]);
-    // Route::get("/exercicio/{modalidade}", [ExercicioController::class, "getAllModalidades"]);
+    Route::get("/exercicio", [ExercicioController::class, "exercicios"]);
+    Route::post("/exercicio/modalidade", [ExercicioController::class, "Modalidade"]);
+    Route::get("/exercicio/pesquisa", [ExercicioController::class, "searchExercicio"]);
+    Route::get("/exercicio/detalhe/{id}", [ExercicioController::class, "detalheModalidade"]);
 });
 
