@@ -90,8 +90,30 @@ class ExercicioController
 
     }
 
-    public function detalheModalidade()
+    public function detalheExercicio($id)
     {
+
+        try {
+            $result = $this->exercicioService->detalheExercicio($id);
+
+            if(!$result){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'exercicio não encontrado'
+                ], 404);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'exercicio encontrado',
+                'data' => $result
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                "error" => true,
+                "message" => "Erro inesperado". $e->getMessage()
+            ], 500);
+        }
         
     }
 }

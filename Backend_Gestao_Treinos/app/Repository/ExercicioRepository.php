@@ -39,4 +39,9 @@ class ExercicioRepository
             ->get();
     }
 
+    public function detalheExercicios($id)
+    {
+        return $this->exercicio::where('id', $id)->get();
+    }
+
 }

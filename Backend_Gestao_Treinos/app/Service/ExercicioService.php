@@ -12,7 +12,7 @@ class ExercicioService
 
     public function getExercicios()
     {
-        $result = $this->exercicioRepository->findAllExercicios();
+        $dados = $this->exercicioRepository->findAllExercicios();
         // dd($result);
 
         // if (empty($result) || $result === false){
@@ -22,14 +22,14 @@ class ExercicioService
         //     ];
         // }
 
-        return $result;
+        return $dados;
     }
 
     public function getByModalidade($modalidade)
     {
         $mod = $modalidade->fk_modalidade;
         // dd($mod);
-        $result = $this->exercicioRepository->findByModalidade($mod);
+        $dados = $this->exercicioRepository->findByModalidade($mod);
         // dd($result);
 
         // if ($result->is_Empty()){
@@ -39,13 +39,21 @@ class ExercicioService
         //     ];
         // }
 
-        return $result;
+        return $dados;
     }
 
     public function searchExercicio($search)
     {
-        $result = $this->exercicioRepository->searchExercicio($search);
+        $dados = $this->exercicioRepository->searchExercicio($search);
 
-        return $result;
+        return $dados;
+    }
+
+    public function detalheExercicio($id)
+    {
+        $dados = $this->exercicioRepository->detalheExercicios($id);
+
+        return $dados;
+
     }
 }

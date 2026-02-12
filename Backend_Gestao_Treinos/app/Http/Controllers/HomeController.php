@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ConteudoController extends Controller
+class HomeController extends Controller
 {
 
-    public function conteudo()
+    public function home()
     {
         return response()->json(["sucess"=> true]);
         
