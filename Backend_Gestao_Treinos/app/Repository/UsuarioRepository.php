@@ -20,8 +20,10 @@ class UsuarioRepository
         return $this->usuario->findOrFail($id)->delete();
     }
 
-    public function usuarioUpdate()
+    public function usuarioUpdateById($dados, int $id)
     {
+        $usuario = $this->usuario->findOrFail($id);
 
+        return $usuario->update($dados);
     }
 }

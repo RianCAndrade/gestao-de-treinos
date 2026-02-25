@@ -21,9 +21,9 @@ Route::middleware(["auth:sanctum"])->group(function (){
     
     //Rotas Usuario
 
-    // Route::get('/usuario', []);
-    // Route::put('/usuario/update', []);
-    Route::delete("/usuario/delete/{id}", [UsuarioController::class, "usuarioDelete"]);
+    // Route::get('/usuario', [UsuarioController::class, ]);
+    Route::put('/usuario/update/{id}', [UsuarioController::class, "usuarioUpdate"]);
+    Route::delete("/usuario/delete/{id}", [UsuarioController::class, "usuarioDelete"]); //Proprio usuario deleta sua conta
 
 
     // admin

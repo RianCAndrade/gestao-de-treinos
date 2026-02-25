@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Repository\UsuarioRepository;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioService 
 {
@@ -22,8 +23,13 @@ class UsuarioService
         return $dados;
     }
 
-    public function usuarioUpdate()
+    public function usuarioUpdate($dados, int $id)
     {
 
+        if(isset($dados['senha'])){
+            $dados['senha'] = Hash::make($dados['senha']);
+        }
+
+        return $this->usuarioRepository->usuarioUpdateById($dados, $id);
     }
 }
