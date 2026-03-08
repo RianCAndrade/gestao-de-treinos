@@ -11,9 +11,9 @@ class UsuarioService
         private UsuarioRepository $usuarioRepository
     ){}
 
-    public function usuario()
+    public function usuario($id)
     {
-
+        return $this->usuarioRepository->usuario($id);
     }
 
     public function usuarioDelete($id)

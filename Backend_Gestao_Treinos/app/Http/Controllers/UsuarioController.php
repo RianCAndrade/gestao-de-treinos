@@ -14,9 +14,29 @@ class UsuarioController
         private UsuarioService $usuarioService
     ){}
 
-    public function usuario()
+    public function usuario($id)
     {
+        try {
+            $result = $this->usuarioService->usuario($id);
 
+            if (!$result){
+                return response()->json([
+                    'error' => false,
+                    'message' => 'usuario nao encontrado'
+                ], 404);
+            }
+
+            return response()->json([
+                'error' => false,
+                'message' => 'usuario encontrado com sucesso',
+                'data' => $result
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'falha ao trazer usuario', $e->getMessage()
+            ], 500);
+        }
     }
 
     public function usuarioDelete($id)

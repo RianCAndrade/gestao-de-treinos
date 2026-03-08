@@ -10,9 +10,9 @@ class UsuarioRepository
         private Usuario $usuario
     ){}
 
-    public function usuario()
+    public function usuario($id)
     {
-
+        return $this->usuario->findOrFail($id);
     }
 
     public function usuarioDeleteById($id)

@@ -20,8 +20,7 @@ Route::middleware(["auth:sanctum"])->group(function (){
     Route::post("/logout", [LogoutController::class, "logout"]);
     
     //Rotas Usuario
-
-    // Route::get('/usuario', [UsuarioController::class, ]);
+    Route::get('/usuario/{id}', [UsuarioController::class, "usuario"]); //pegar informação de um usuario
     Route::put('/usuario/update/{id}', [UsuarioController::class, "usuarioUpdate"]);
     Route::delete("/usuario/delete/{id}", [UsuarioController::class, "usuarioDelete"]); //Proprio usuario deleta sua conta
 
