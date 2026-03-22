@@ -44,4 +44,14 @@ class ExercicioRepository
         return $this->exercicio::where('id', $id)->get();
     }
 
+    public function inserirExercicios(array $dados)
+    {
+        return $this->exercicio->create($dados);
+    }
+
+    public function deletarExercicio(int $id)
+    {
+        return $this->exercicio->where('id', $id)->delete();
+    }
+
 }

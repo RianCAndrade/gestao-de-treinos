@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Service\ExercicioService;
 use Exception;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 
 class ExercicioController 
 {
@@ -115,5 +115,62 @@ class ExercicioController
             ], 500);
         }
         
+    }
+    public function inserirExercicio(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'titulo' => 'required|string|max:255',
+                'descricao' => 'required|string',
+                'fk_modalidade' => 'required|integer',
+                'fk_nivel' => 'required|string|max:255',
+                'video_url' => 'required|string|max:255',
+                'imagem_url' => 'required|string|max:255',
+                'ativo' => 'required|boolean',
+            ]);
+
+            $result = $this->exercicioService->inserirExercicio($validated);
+
+            if(!$result){
+                return response()->json([
+                    'error' => true,
+                    'message' => 'erro ao publicar exercicio'
+                ], 400);
+            }
+
+            return response()->json([
+                'error' => false,
+                'message' => 'exercicio publicado com sucesso'
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'erro inesperado '. $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function deletarExercicio(int $id)
+    {
+        try {
+            $result = $this->exercicioService->deletarExercicio($id);
+
+            if(!$result){
+                return response()->json([
+                    'error' => true,
+                    'message' => 'não encontrado exercicio para deletar'
+                ], 404);
+            }
+
+            return response()->json([
+                'error' => false,
+                'message' => 'Exercicio deletado com sucesso'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Error inesperado ', $e->getMessage()
+            ], 500);
+        }
     }
 }

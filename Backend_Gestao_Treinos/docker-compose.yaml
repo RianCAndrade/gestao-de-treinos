@@ -4,7 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel_app
+    container_name: gest_treinos_app
+    hostname: rian-andrade
     restart: unless-stopped
     working_dir: /var/www/html
     volumes:
@@ -27,7 +28,6 @@ services:
   # Nginx (imagem pronta) - AGORA SIM!
   nginx:
     image: nginx:alpine
-    container_name: laravel_nginx
     restart: unless-stopped
     ports:
       - "8001:80"      # ✅ HTTP na porta 8001
@@ -43,7 +43,6 @@ services:
   # PostgreSQL (imagem pronta)
   db:
     image: postgres:15-alpine
-    container_name: laravel_db
     restart: unless-stopped
     ports:
       - "5434:5432"
@@ -73,7 +72,7 @@ services:
   # Redis (cache) - opcional
   redis:
     image: redis:alpine
-    container_name: laravel_redis
+    container_name: gest_treinos_redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -85,7 +84,6 @@ services:
   # Composer (para comandos manuais) - OPICIONAL
   composer:
     image: composer:latest
-    container_name: laravel_composer
     volumes:
       - ./:/app
     working_dir: /app

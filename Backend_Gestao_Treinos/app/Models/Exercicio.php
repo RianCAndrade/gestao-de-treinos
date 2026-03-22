@@ -12,7 +12,7 @@ class Exercicio extends Model
         "titulo",
         "descricao",
         "fk_modalidade",
-        "nivel",
+        "fk_nivel",
         "video_url",
         "imagem_url",
         "ativo",

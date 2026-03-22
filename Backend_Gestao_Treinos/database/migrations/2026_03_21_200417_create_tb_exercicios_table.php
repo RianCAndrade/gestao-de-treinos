@@ -19,7 +19,9 @@ return new class extends Migration
             $table->foreignId('fk_modalidade')
             ->constrained("tb_modalidades")
             ->cascadeOnDelete();
-            $table->enum('nivel',['Iniciante', 'Intermediario', 'avancado'])->nullable();
+            $table->foreignId('fk_nivel')
+            ->constrained("tb_niveis")
+            ->cascadeOnDelete();
             $table->string('video_url')->nullable();
             $table->string('imagem_url')->nullable();
 

@@ -56,4 +56,14 @@ class ExercicioService
         return $dados;
 
     }
+
+    public function inserirExercicio(array $dados)
+    {
+        return $this->exercicioRepository->inserirExercicios($dados);
+    }
+
+    public function deletarExercicio(int $id)
+    {
+        return $this->exercicioRepository->deletarExercicio($id);
+    }
 }
