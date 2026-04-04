@@ -6,6 +6,7 @@ use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ModalidadeController;
+use App\Http\Controllers\NivelController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 use PhpParser\Node\Expr;
@@ -32,6 +33,8 @@ Route::middleware(["auth:sanctum"])->group(function (){
         Route::delete('/deletarexercicio/{id}', [ExercicioController::class, 'deletarExercicio']);
         Route::post('/inserirmodalidade', [ModalidadeController::class, 'inserirModalidade']);
         Route::delete('/deletarmodalidade/{id}', [ModalidadeController::class, 'deletarModalidade']);
+        Route::post('/inserirnivel', [NivelController::class, 'inserirnivel']);
+        Route::delete('/deletarnivel/{id}', [NivelController::class, 'deletarNivel']);
     });
 
     // Rotas exercicios

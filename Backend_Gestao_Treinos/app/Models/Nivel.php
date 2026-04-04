@@ -9,6 +9,8 @@ class Nivel extends Model
     protected $table = "tb_niveis";
 
     protected $fillable = [
-        "nome"
+        "nivel"
     ];
+
+    public $timestamps = true;
 }
