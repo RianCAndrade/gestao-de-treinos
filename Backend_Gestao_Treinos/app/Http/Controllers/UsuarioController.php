@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\UsuarioService;
+use App\Http\Service\UsuarioService;
 use Exception;
 use Illuminate\Http\Request;
 

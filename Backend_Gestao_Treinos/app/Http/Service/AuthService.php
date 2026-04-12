@@ -2,7 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\Repository\AuthRepository;
+use App\Http\Repository\AuthRepository;
 use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;

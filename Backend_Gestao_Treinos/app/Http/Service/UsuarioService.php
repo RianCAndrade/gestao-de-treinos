@@ -2,7 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\Repository\UsuarioRepository;
+use App\Http\Repository\UsuarioRepository;
 use Illuminate\Support\Facades\Hash;
 
 class UsuarioService 

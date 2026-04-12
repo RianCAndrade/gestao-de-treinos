@@ -2,7 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\Repository\ExercicioRepository;
+use App\Http\Repository\ExercicioRepository;
 
 class ExercicioService 
 {

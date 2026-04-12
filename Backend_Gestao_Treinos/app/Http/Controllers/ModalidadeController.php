@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\ModalidadeService;
+use App\Http\Service\ModalidadeService;
 use Exception;
 use Illuminate\Http\Request;
 

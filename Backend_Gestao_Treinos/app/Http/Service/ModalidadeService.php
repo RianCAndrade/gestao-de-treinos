@@ -2,7 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\Repository\ModalidadeRepository;
+use App\Http\Repository\ModalidadeRepository;
 
 class ModalidadeService 
 {

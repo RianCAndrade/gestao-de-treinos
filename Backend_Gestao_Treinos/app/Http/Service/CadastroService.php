@@ -2,7 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\Repository\CadastroRepository;
+use App\Http\Repository\CadastroRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 

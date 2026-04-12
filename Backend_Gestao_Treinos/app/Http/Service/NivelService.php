@@ -2,7 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\Repository\NivelRepository;
+use App\Http\Repository\NivelRepository;
 
 class NivelService
 {

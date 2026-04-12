@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Service\NivelService;
+use App\Http\Service\NivelService;
 use Illuminate\Http\Request;
 
 class NivelController 

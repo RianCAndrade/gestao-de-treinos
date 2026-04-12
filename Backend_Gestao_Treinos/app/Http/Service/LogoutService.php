@@ -2,7 +2,7 @@
 
 namespace App\Http\Service;
 
-use App\Repository\LogoutRepository;
+use App\Http\Repository\LogoutRepository;
 use Exception;
 use Illuminate\Http\Request;
 

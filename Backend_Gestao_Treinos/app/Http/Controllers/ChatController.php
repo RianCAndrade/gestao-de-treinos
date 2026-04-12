@@ -14,7 +14,6 @@ class ChatController
     public function chat(Request $request)
     {
         try {
-            set_time_limit(0);
 
             $message = [
                 [
@@ -39,7 +38,7 @@ class ChatController
         } catch (\Exception $e) {
             return response()->json([
                 "error" => true,
-                "message" => "erro inesperado", $e->getMessage()
+                "message" => "erro inesperado, " . $e->getMessage()
             ], 500);
         }
     }
