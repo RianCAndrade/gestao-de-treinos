@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Http\Repository;
 
 use App\Models\Exercicio;
 use GuzzleHttp\Psr7\Query;

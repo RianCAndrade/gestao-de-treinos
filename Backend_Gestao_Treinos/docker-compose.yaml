@@ -1,6 +1,6 @@
 services:
   # PHP-FPM + Laravel (SEU código - usa Dockerfile)
-  app:
+  gest_treinos_app:
     build:
       context: .
       dockerfile: Dockerfile
@@ -38,7 +38,7 @@ services:
     networks:
       - laravel-network
     depends_on:
-      - app
+      - gest_treinos_app
 
   # PostgreSQL (imagem pronta)
   db:

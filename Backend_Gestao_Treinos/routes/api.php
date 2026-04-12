@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CadastroController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ExercicioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogoutController;
@@ -22,9 +23,12 @@ Route::middleware(["auth:sanctum"])->group(function (){
     Route::post("/logout", [LogoutController::class, "logout"]);
     
     //Rotas Usuario
-    Route::get('/usuario/{id}', [UsuarioController::class, "usuario"]); //pegar informação de um usuario
+    Route::get('/usuario/{id}', [UsuarioController::class, "usuario"]); // pegar informação de um usuario
     Route::put('/usuario/update/{id}', [UsuarioController::class, "usuarioUpdate"]);
-    Route::delete("/usuario/delete/{id}", [UsuarioController::class, "usuarioDelete"]); //Proprio usuario deleta sua conta
+    Route::delete("/usuario/delete/{id}", [UsuarioController::class, "usuarioDelete"]); // Proprio usuario deleta sua conta
+
+    // Rota da IA
+    Route::get("/chat",[ChatController::class, 'chat']);
 
 
     // Rotas admin
