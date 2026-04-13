@@ -6,7 +6,7 @@ return [
     'allowed_methods' => ['*'], // Métodos permitidos (GET, POST, etc)
     'allowed_origins' => [
 
-        'http://localhost:5500'
+        'http://localhost:3000'
     ], // URLs de origem permitidas
     'allowed_headers' => ['*'], // Cabeçalhos permitidos
     'exposed_headers' => [],

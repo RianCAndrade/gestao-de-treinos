@@ -25,6 +25,8 @@ import {
   HelpCircle
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { api } from "@/lib/api"
 
 // Mock data - será substituído pela API Laravel
 const userData = {
@@ -72,7 +74,19 @@ const menuItems = [
 ]
 
 export default function PerfilPage() {
+  const router = useRouter()
   const [isEditing, setIsEditing] = useState(false)
+
+  const handleLogout = async () => {
+    try {
+      await api.logout()
+    } catch {
+      // Mesmo se der erro no backend, desloga localmente
+    } finally {
+      api.clearToken()
+      router.replace("/login")
+    }
+  }
 
   return (
     <AppShell>
@@ -248,7 +262,11 @@ export default function PerfilPage() {
         </section>
 
         {/* Logout */}
-        <Button variant="outline" className="w-full gap-2 text-destructive hover:text-destructive hover:bg-destructive/10">
+        <Button
+          variant="outline"
+          className="w-full gap-2 text-destructive hover:text-destructive hover:bg-destructive/10"
+          onClick={handleLogout}
+        >
           <LogOut className="h-5 w-5" />
           Sair da Conta
         </Button>

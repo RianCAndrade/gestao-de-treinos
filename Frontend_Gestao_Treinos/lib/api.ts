@@ -69,26 +69,24 @@ class ApiService {
 
   // ============ AUTENTICAÇÃO ============
   
-  async login(email: string, password: string) {
-    const data = await this.request<{ token: string; user: User }>("/auth/login", {
+  async login(email: string, senha: string) {
+    const data = await this.request<{ token: string; user: User }>("/login", {
       method: "POST",
-      body: { email, password },
+      body: { email, senha },
     })
     this.setToken(data.token)
     return data
   }
 
-  async register(userData: RegisterData) {
-    const data = await this.request<{ token: string; user: User }>("/auth/register", {
+  async register(userData: CadastroData) {
+    return this.request<{ sucesso: boolean; data: User }>("/cadastro", {
       method: "POST",
       body: userData,
     })
-    this.setToken(data.token)
-    return data
   }
 
   async logout() {
-    await this.request("/auth/logout", { method: "POST" })
+    await this.request("/logout", { method: "POST" })
     this.clearToken()
   }
 
@@ -148,15 +146,11 @@ class ApiService {
 
   // ============ CHAT IA ============
 
-  async sendChatMessage(message: string) {
-    return this.request<ChatResponse>("/chat", {
-      method: "POST",
-      body: { message },
-    })
-  }
-
-  async getChatHistory() {
-    return this.request<ChatMessage[]>("/chat/history")
+  async sendChatMessage(pergunta: string) {
+    const encoded = encodeURIComponent(pergunta)
+    return this.request<{ error: boolean; message: { role: string; content: string } }>(
+      `/chat?pergunta=${encoded}`
+    )
   }
 
   // ============ ESTATÍSTICAS ============
@@ -191,11 +185,12 @@ export interface User {
   created_at: string
 }
 
-export interface RegisterData {
-  name: string
+export interface CadastroData {
+  nome: string
+  idade: number
   email: string
-  password: string
-  password_confirmation: string
+  senha: string
+  cpf: string
 }
 
 export interface Workout {

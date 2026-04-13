@@ -14,6 +14,7 @@ import {
   Loader2
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { api } from "@/lib/api"
 
 interface Message {
   id: string
@@ -41,72 +42,6 @@ const suggestedQuestions = [
   },
 ]
 
-// Mock de resposta da IA - será substituído pela API Laravel
-const mockAIResponse = async (message: string): Promise<string> => {
-  await new Promise((resolve) => setTimeout(resolve, 1500))
-  
-  if (message.toLowerCase().includes("peito")) {
-    return `Claro! Aqui está um treino de peito para iniciantes:
-
-**Treino de Peito - Iniciante**
-
-1. **Flexão de Braço (Joelhos)** - 3 séries de 10-12 reps
-   - Mantenha o core ativado
-   - Desça controladamente
-
-2. **Supino com Halteres** - 3 séries de 12 reps
-   - Peso leve para focar na técnica
-   - Movimento completo
-
-3. **Crucifixo no Banco** - 3 séries de 15 reps
-   - Braços levemente flexionados
-   - Sinta o alongamento do peito
-
-4. **Flexão Inclinada (Mãos no banco)** - 2 séries até falha
-
-**Dicas:**
-- Descanse 60-90 segundos entre séries
-- Faça aquecimento antes
-- Aumente o peso gradualmente
-
-Quer que eu explique algum exercício em detalhes?`
-  }
-  
-  if (message.toLowerCase().includes("agachamento")) {
-    return `A técnica correta do agachamento é essencial! Aqui estão os pontos principais:
-
-**Posição Inicial:**
-- Pés na largura dos ombros
-- Pontas dos pés levemente para fora
-- Core ativado, peito para cima
-
-**Durante o Movimento:**
-- Empurre os joelhos para fora
-- Mantenha os calcanhares no chão
-- Desça até as coxas ficarem paralelas ao solo
-- Olhe para frente, não para baixo
-
-**Erros Comuns:**
-- Joelhos indo para dentro
-- Inclinar muito o tronco
-- Levantar os calcanhares
-- Arredondar as costas
-
-Quer que eu monte um treino focado em agachamento?`
-  }
-  
-  return `Ótima pergunta! Como seu personal trainer virtual, estou aqui para ajudá-lo a alcançar seus objetivos fitness.
-
-Baseado na sua pergunta sobre "${message}", posso te ajudar com:
-
-- Treinos personalizados
-- Dicas de técnica
-- Orientações nutricionais
-- Estratégias de progressão
-
-Me conte mais sobre seus objetivos e nível atual para que eu possa dar recomendações mais específicas!`
-}
-
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
@@ -122,8 +57,7 @@ export default function ChatPage() {
     scrollToBottom()
   }, [messages])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (!input.trim() || isLoading) return
 
     const userMessage: Message = {
@@ -138,19 +72,24 @@ export default function ChatPage() {
     setIsLoading(true)
 
     try {
-      // Aqui você conectará com sua API Laravel
-      const response = await mockAIResponse(userMessage.content)
-      
+      const response = await api.sendChatMessage(userMessage.content)
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response,
+        content: response.message.content,
         timestamp: new Date(),
       }
 
       setMessages((prev) => [...prev, assistantMessage])
-    } catch (error) {
-      console.error("Erro ao enviar mensagem:", error)
+    } catch {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.",
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, errorMessage])
     } finally {
       setIsLoading(false)
     }
@@ -161,10 +100,10 @@ export default function ChatPage() {
     inputRef.current?.focus()
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: { key: string; shiftKey: boolean; preventDefault: () => void }) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
-      handleSubmit(e)
+      handleSubmit()
     }
   }
 
@@ -285,7 +224,7 @@ export default function ChatPage() {
 
         {/* Input */}
         <div className="shrink-0 border-t border-border bg-card/50 backdrop-blur-lg p-4">
-          <form onSubmit={handleSubmit} className="flex gap-2">
+          <form onSubmit={(e) => { e.preventDefault(); handleSubmit() }} className="flex gap-2">
             <textarea
               ref={inputRef}
               value={input}
