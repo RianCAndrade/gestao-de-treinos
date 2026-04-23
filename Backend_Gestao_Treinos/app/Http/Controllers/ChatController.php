@@ -4,42 +4,58 @@ namespace App\Http\Controllers;
 
 use App\Http\Service\ChatService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChatController
 {
     public function __construct(
         private ChatService $chatService
-    ){}
+    ) {}
 
     public function chat(Request $request)
     {
-        try {
+        $conversationId = $request->input('conversation_id');
 
-            $message = [
-                [
-                    "role" => "user",
-                    "content" => $request->pergunta
-                ]
-            ];
+        $stream = $this->chatService->stream(
+            $request->input('pergunta'),
+            $conversationId
+        );
 
-            $response = $this->chatService->chat($message);
+        return response()->stream(function () use ($stream, $conversationId) {
+            foreach ($stream as $event) {
+                echo 'data: '.json_encode($event)."\n\n";
 
-            if(!$response){
-                return response()->json([
-                    "error" => true,
-                    "message" => "erro na requesição"
-                ], 422);
+                if (ob_get_level() > 0) {
+                    ob_flush();
+                }
+                flush();
             }
 
-            return response()->json([
-                "error" => false,
-                "message" => $response
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                "error" => true,
-                "message" => "erro inesperado, " . $e->getMessage()
-            ], 500);
-        }
+            if (! $conversationId) {
+                $conversation = DB::table('agent_conversations')
+                    ->where('user_id', auth()->id())
+                    ->latest('updated_at')
+                    ->first();
+
+                $conversationId = $conversation?->id;
+            }
+
+            echo 'data: '.json_encode([
+                'type' => 'conversation_id',
+                'conversation_id' => $conversationId,
+            ])."\n\n";
+
+            echo "data: [DONE]\n\n";
+
+            if (ob_get_level() > 0) {
+                ob_flush();
+            }
+            flush();
+        }, 200, [
+            'Content-Type' => 'text/event-stream',
+            'Cache-Control' => 'no-cache',
+            'Connection' => 'keep-alive',
+            'X-Accel-Buffering' => 'no',
+        ]);
     }
 }

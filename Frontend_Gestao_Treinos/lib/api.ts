@@ -146,11 +146,73 @@ class ApiService {
 
   // ============ CHAT IA ============
 
-  async sendChatMessage(pergunta: string) {
-    const encoded = encodeURIComponent(pergunta)
-    return this.request<{ error: boolean; message: { role: string; content: string } }>(
-      `/chat?pergunta=${encoded}`
-    )
+  async streamChat(
+    pergunta: string,
+    conversationId: string | null,
+    onChunk: (text: string) => void,
+    onDone?: (conversationId: string | null) => void
+  ): Promise<void> {
+    const token = this.getToken()
+
+    const response = await fetch(`${API_URL}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ pergunta, conversation_id: conversationId }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: "Erro desconhecido" }))
+      throw new Error(error.message || `Erro ${response.status}`)
+    }
+
+    const reader = response.body!.getReader()
+    const decoder = new TextDecoder()
+    let buffer = ""
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+
+      buffer += decoder.decode(value, { stream: true })
+      const lines = buffer.split("\n")
+      buffer = lines.pop() || ""
+
+      for (const line of lines) {
+        if (!line.startsWith("data: ")) continue
+        const data = line.slice(6).trim()
+        if (!data || data === "[DONE]") continue
+
+        try {
+          const parsed = JSON.parse(data)
+
+          if (parsed.type === "text_delta" && parsed.delta) {
+            onChunk(parsed.delta)
+          } else if (parsed.type === "conversation_id" && parsed.conversation_id && onDone) {
+            onDone(parsed.conversation_id)
+          }
+        } catch {
+          onChunk(data)
+        }
+      }
+    }
+
+    if (buffer.startsWith("data: ")) {
+      const data = buffer.slice(6).trim()
+      if (data && data !== "[DONE]") {
+        try {
+          const parsed = JSON.parse(data)
+          if (parsed.type === "text_delta" && parsed.delta) {
+            onChunk(parsed.delta)
+          }
+        } catch {
+          onChunk(data)
+        }
+      }
+    }
   }
 
   // ============ ESTATÍSTICAS ============

@@ -1,30 +1,21 @@
-<?php 
+<?php
 
 namespace App\Http\Service;
 
-use Illuminate\Support\Facades\Http;
+use App\Ai\Agents\GymTrainer;
 
 class ChatService
 {
-    private $baseUrl = 'https://openrouter.ai/api/v1/chat/completions';
-
-    // public function __construct(
-
-    // ){}
-
-    public function chat($message)
+    public function stream(string $pergunta, ?string $conversationId = null)
     {
-        $response = Http::timeout(120)->withHeaders([
-            'Authorization' => 'Bearer ' . env('OPENROUTER_API_KEY'),
-            'Content-Type' => 'application/json'
-        ])->post($this->baseUrl, [
-            "model" => "nvidia/nemotron-3-super-120b-a12b:free",
-            "messages" => $message,
-            "reasoning" => ["enabled" => true]
-        ]);
+        $agent = new GymTrainer;
 
-        $data = $response->json();
+        if ($conversationId) {
+            $agent = $agent->continue($conversationId, as: auth()->user());
+        } else {
+            $agent = $agent->forUser(auth()->user());
+        }
 
-        return $data["choices"][0]["message"];
+        return $agent->stream($pergunta);
     }
 }

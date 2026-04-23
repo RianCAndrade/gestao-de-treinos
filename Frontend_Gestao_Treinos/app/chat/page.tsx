@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { AppShell } from "@/components/app-shell"
 import { Button } from "@/components/ui/button"
 import { 
@@ -11,7 +11,8 @@ import {
   Target,
   Utensils,
   TrendingUp,
-  Loader2
+  Loader2,
+  RotateCcw
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { api } from "@/lib/api"
@@ -21,6 +22,7 @@ interface Message {
   role: "user" | "assistant"
   content: string
   timestamp: Date
+  isStreaming?: boolean
 }
 
 const suggestedQuestions = [
@@ -46,6 +48,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [conversationId, setConversationId] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -57,47 +60,79 @@ export default function ChatPage() {
     scrollToBottom()
   }, [messages])
 
-  const handleSubmit = async () => {
-    if (!input.trim() || isLoading) return
+  const handleSubmit = useCallback(async (text?: string) => {
+    const messageText = text || input.trim()
+    if (!messageText || isLoading) return
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
-      content: input.trim(),
+      content: messageText,
       timestamp: new Date(),
     }
 
-    setMessages((prev) => [...prev, userMessage])
+    const assistantMessageId = (Date.now() + 1).toString()
+
+    setMessages((prev) => [
+      ...prev,
+      userMessage,
+      {
+        id: assistantMessageId,
+        role: "assistant",
+        content: "",
+        timestamp: new Date(),
+        isStreaming: true,
+      },
+    ])
     setInput("")
     setIsLoading(true)
 
     try {
-      const response = await api.sendChatMessage(userMessage.content)
+      await api.streamChat(
+        messageText,
+        conversationId,
+        (chunk) => {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMessageId
+                ? { ...msg, content: msg.content + chunk }
+                : msg
+            )
+          )
+        },
+        (newConversationId) => {
+          if (newConversationId) {
+            setConversationId(newConversationId)
+          }
+        }
+      )
 
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: response.message.content,
-        timestamp: new Date(),
-      }
-
-      setMessages((prev) => [...prev, assistantMessage])
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantMessageId
+            ? { ...msg, isStreaming: false }
+            : msg
+        )
+      )
     } catch {
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: "Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.",
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, errorMessage])
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantMessageId
+            ? {
+                ...msg,
+                content: "Desculpe, ocorreu um erro ao processar sua mensagem. Tente novamente.",
+                isStreaming: false,
+              }
+            : msg
+        )
+      )
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [input, isLoading, conversationId])
 
   const handleSuggestionClick = (text: string) => {
-    setInput(text)
-    inputRef.current?.focus()
+    handleSubmit(text)
   }
 
   const handleKeyDown = (e: { key: string; shiftKey: boolean; preventDefault: () => void }) => {
@@ -107,19 +142,38 @@ export default function ChatPage() {
     }
   }
 
+  const handleNewChat = () => {
+    setMessages([])
+    setConversationId(null)
+    inputRef.current?.focus()
+  }
+
   return (
     <AppShell>
       <div className="flex flex-col h-[calc(100vh-80px)] md:h-screen">
         {/* Header */}
         <header className="shrink-0 border-b border-border bg-card/50 backdrop-blur-lg p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary">
-              <Sparkles className="h-5 w-5 text-primary-foreground" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary">
+                <Sparkles className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <div>
+                <h1 className="font-semibold">Personal Trainer IA</h1>
+                <p className="text-sm text-muted-foreground">Sempre disponível para ajudar</p>
+              </div>
             </div>
-            <div>
-              <h1 className="font-semibold">Personal Trainer IA</h1>
-              <p className="text-sm text-muted-foreground">Sempre disponível para ajudar</p>
-            </div>
+            {messages.length > 0 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleNewChat}
+                className="gap-2"
+              >
+                <RotateCcw className="h-4 w-4" />
+                Nova conversa
+              </Button>
+            )}
           </div>
         </header>
 
@@ -181,18 +235,29 @@ export default function ChatPage() {
                   >
                     <div className="whitespace-pre-wrap text-sm">
                       {message.content}
+                      {message.isStreaming && message.content.length === 0 && (
+                        <span className="inline-flex items-center gap-2 text-muted-foreground">
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                          Pensando...
+                        </span>
+                      )}
+                      {message.isStreaming && message.content.length > 0 && (
+                        <span className="inline-block w-1.5 h-4 ml-0.5 bg-primary animate-pulse rounded-sm" />
+                      )}
                     </div>
-                    <div className={cn(
-                      "mt-1 text-xs",
-                      message.role === "user" 
-                        ? "text-primary-foreground/70" 
-                        : "text-muted-foreground"
-                    )}>
-                      {message.timestamp.toLocaleTimeString("pt-BR", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
+                    {!message.isStreaming && (
+                      <div className={cn(
+                        "mt-1 text-xs",
+                        message.role === "user" 
+                          ? "text-primary-foreground/70" 
+                          : "text-muted-foreground"
+                      )}>
+                        {message.timestamp.toLocaleTimeString("pt-BR", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
+                    )}
                   </div>
                   
                   {message.role === "user" && (
@@ -202,20 +267,6 @@ export default function ChatPage() {
                   )}
                 </div>
               ))}
-              
-              {isLoading && (
-                <div className="flex gap-3 justify-start">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
-                    <Sparkles className="h-4 w-4 text-primary-foreground" />
-                  </div>
-                  <div className="bg-card border border-border rounded-2xl px-4 py-3">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Pensando...
-                    </div>
-                  </div>
-                </div>
-              )}
               
               <div ref={messagesEndRef} />
             </>
