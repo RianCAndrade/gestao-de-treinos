@@ -23,7 +23,7 @@ class ChatController
 
         return response()->stream(function () use ($stream, $conversationId) {
             foreach ($stream as $event) {
-                echo 'data: '.json_encode($event)."\n\n";
+                echo 'data: '.((string) $event)."\n\n";
 
                 if (ob_get_level() > 0) {
                     ob_flush();

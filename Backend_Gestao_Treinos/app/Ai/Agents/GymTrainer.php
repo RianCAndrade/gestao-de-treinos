@@ -7,7 +7,7 @@ use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Promptable;
 
-#[Model('nvidia/nemotron-3-super-120b-a12b:free')]
+#[Model('openai/gpt-oss-120b:free')]
 class GymTrainer implements Agent
 {
     use Promptable, RemembersConversations;

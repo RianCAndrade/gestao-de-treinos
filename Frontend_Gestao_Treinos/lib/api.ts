@@ -5,7 +5,7 @@
  * Exemplo: NEXT_PUBLIC_API_URL=https://sua-api.com/api
  */
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001/api"
 
 interface ApiOptions {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
