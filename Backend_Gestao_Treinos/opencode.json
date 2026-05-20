@@ -5,9 +5,7 @@
             "type": "local",
             "enabled": true,
             "command": [
-                "php",
-                "artisan",
-                "boost:mcp"
+                "docker exec -i gest_treinos_app php artisan boost:mcp"
             ]
         }
     }

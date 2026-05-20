@@ -1,5 +1,5 @@
 services:
-  # PHP-FPM + Laravel (SEU código - usa Dockerfile)
+  # PHP-FPM + Laravel
   gest_treinos_app:
     build:
       context: .
@@ -25,12 +25,12 @@ services:
     depends_on:
       - db
 
-  # Nginx (imagem pronta) - AGORA SIM!
+  # Nginx (imagem pronta)
   nginx:
     image: nginx:alpine
     restart: unless-stopped
     ports:
-      - "8001:80"      # ✅ HTTP na porta 8001
+      - "8001:80"      # HTTP na porta 8001
     volumes:
       - ./:/var/www/html
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
@@ -40,7 +40,7 @@ services:
     depends_on:
       - gest_treinos_app
 
-  # PostgreSQL (imagem pronta)
+  # PostgreSQL
   db:
     image: postgres:15-alpine
     restart: unless-stopped
@@ -61,7 +61,7 @@ services:
     container_name: laravel_adminer
     restart: unless-stopped
     ports:
-      - "8002:8080"    # ✅ Adminer na porta 8002
+      - "8002:8080"    # Adminer na porta 8002
     environment:
       ADMINER_DEFAULT_SERVER: db
     networks:
@@ -81,7 +81,7 @@ services:
     networks:
       - laravel-network
 
-  # Composer (para comandos manuais) - OPICIONAL
+  # Composer (para comandos manuais) - OPCIONAL
   composer:
     image: composer:latest
     volumes:

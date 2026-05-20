@@ -1,11 +1,7 @@
 {
     "amp.mcpServers": {
         "laravel-boost": {
-            "command": "php",
-            "args": [
-                "artisan",
-                "boost:mcp"
-            ]
+            "command": "docker exec -i gest_treinos_app php artisan boost:mcp"
         }
     }
 }
