@@ -1,8 +1,8 @@
 <?php 
 
-namespace App\Http\Service;
+namespace App\Service;
 
-use App\Http\Repository\CadastroRepository;
+use App\Repository\CadastroRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 

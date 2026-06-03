@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Service\LogoutService;
+use App\Service\LogoutService;
 use Exception;
 use Illuminate\Http\Request;
 

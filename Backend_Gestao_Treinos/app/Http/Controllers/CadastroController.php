@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Service\CadastroService;
+use App\Service\CadastroService;
 use Illuminate\Http\Request;
 use Exception;
 

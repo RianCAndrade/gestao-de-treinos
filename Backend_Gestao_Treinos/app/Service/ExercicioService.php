@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Service;
 
-use App\Http\Repository\ExercicioRepository;
+use App\Repository\ExercicioRepository;
 
 class ExercicioService 
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Service;
 
-use App\Http\Repository\LogoutRepository;
+use App\Repository\LogoutRepository;
 use Exception;
 use Illuminate\Http\Request;
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Service\ChatService;
+use App\Service\ChatService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

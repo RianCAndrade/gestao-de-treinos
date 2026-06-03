@@ -1,8 +1,8 @@
 <?php 
 
-namespace App\Http\Service;
+namespace App\Service;
 
-use App\Http\Repository\NivelRepository;
+use App\Repository\NivelRepository;
 
 class NivelService
 {

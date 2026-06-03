@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Service;
 
-use App\Http\Repository\AuthRepository;
+use App\Repository\AuthRepository;
 use Illuminate\Container\Attributes\Auth as AttributesAuth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
