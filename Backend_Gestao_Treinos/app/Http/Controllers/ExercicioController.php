@@ -38,11 +38,11 @@ class ExercicioController
         
     }
 
-    public function Modalidade(Request $request)
+    public function modalidade(Request $request)
     {
         try {
 
-            $result = $this->exercicioService->getByModalidade($request);
+            $result = $this->exercicioService->getByModalidade($request->input('fk_modalidade'));
 
             // $modalidade = $result->fk_modalidade;
 
@@ -66,7 +66,7 @@ class ExercicioController
     public function searchExercicio(Request $request)
     {
         try {
-            $search = $request->get('search');
+            $search = $request->query('search');
 
             $result = $this->exercicioService->searchExercicio($search);
 
@@ -90,7 +90,7 @@ class ExercicioController
 
     }
 
-    public function detalheExercicio($id)
+    public function detalheExercicio(int $id)
     {
 
         try {

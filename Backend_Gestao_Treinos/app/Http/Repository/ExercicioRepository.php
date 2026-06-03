@@ -18,9 +18,9 @@ class ExercicioRepository
         return $this->exercicio::all();
     }
 
-    public function findByModalidade($modalidade)
+    public function findByModalidade(int $fk_modalidade)
     {
-        return $this->exercicio::where('fk_modalidade', $modalidade)->get();
+        return $this->exercicio::where('fk_modalidade', $fk_modalidade)->get();
     }
 
     public function searchExercicio(?string $search)
@@ -39,7 +39,7 @@ class ExercicioRepository
             ->get();
     }
 
-    public function detalheExercicios($id)
+    public function detalheExercicios(int $id)
     {
         return $this->exercicio::where('id', $id)->get();
     }

@@ -25,11 +25,11 @@ class ExercicioService
         return $dados;
     }
 
-    public function getByModalidade($modalidade)
+    public function getByModalidade(int $fk_modalidade)
     {
-        $mod = $modalidade->fk_modalidade;
+        // $mod = $modalidade;
         // dd($mod);
-        $dados = $this->exercicioRepository->findByModalidade($mod);
+        $dados = $this->exercicioRepository->findByModalidade($fk_modalidade);
         // dd($result);
 
         // if ($result->is_Empty()){
@@ -42,14 +42,14 @@ class ExercicioService
         return $dados;
     }
 
-    public function searchExercicio($search)
+    public function searchExercicio(string $search)
     {
         $dados = $this->exercicioRepository->searchExercicio($search);
 
         return $dados;
     }
 
-    public function detalheExercicio($id)
+    public function detalheExercicio(int $id)
     {
         $dados = $this->exercicioRepository->detalheExercicios($id);
 

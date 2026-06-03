@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Rotas exercicios
     Route::get('/exercicio', [ExercicioController::class, 'exercicios']);
-    Route::post('/exercicio/modalidade', [ExercicioController::class, 'Modalidade']);
+    Route::post('/exercicio/modalidade', [ExercicioController::class, 'modalidade']);
     Route::get('/exercicio/pesquisa', [ExercicioController::class, 'searchExercicio']);
     Route::get('/exercicio/detalhe/{id}', [ExercicioController::class, 'detalheExercicio']);
 });
