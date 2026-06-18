@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\RegisterRequest;
 use App\Service\CadastroService;
 use Illuminate\Http\Request;
-use Exception;
-
+// use Exception;
+use Sentry\Exception\JsonException;
 
 class CadastroController extends Controller
 {
@@ -33,7 +33,7 @@ class CadastroController extends Controller
                 "sucesso" => true,
                 "data" => $usuario
             ], 201);
-        } catch (Exception $e) {
+        } catch (JsonException $e) {
             return response()->json([
                 "erro" => "erro ao criar o usuario",
                 "mensagem" => $e->getMessage()

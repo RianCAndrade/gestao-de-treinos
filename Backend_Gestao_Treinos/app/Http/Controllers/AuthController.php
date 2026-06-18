@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Service\AuthService;
 use Illuminate\Http\Request;
-use Exception;
+// use Exception;
+use Sentry\Exception\JsonException;
 
 // use function Termwind\render;
 
@@ -44,7 +45,7 @@ class AuthController extends Controller
                 "token" => $result["token"],
                 "data" => $result["user"],
             ]);
-        } catch (Exception $e) {
+        } catch (JsonException $e) {
             return response()->json([
                 "sucesso" => false,
                 "mensagem" => "Erro interno do servidor",
