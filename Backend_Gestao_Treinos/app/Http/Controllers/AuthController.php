@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Service\AuthService;
 use Illuminate\Http\Request;
 use Exception;
@@ -20,14 +21,11 @@ class AuthController extends Controller
     //     return render("/conteudo");
     // }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         try 
         {
-            $validated = $request->validate([
-                "email" => "required|email",
-                "senha" => "required|min:6",
-            ]);
+            $validated = $request->validated();
 
             $result = $this->authService->authenticate($validated);
 

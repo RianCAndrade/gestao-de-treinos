@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
 use App\Service\CadastroService;
 use Illuminate\Http\Request;
 use Exception;
@@ -14,16 +15,10 @@ class CadastroController extends Controller
         private CadastroService $cadastroService
     ){}
     
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         try {
-            $validated = $request->validate([
-                "nome" => "required|string|max:255",
-                "idade" => "required|integer|min:0|max:255",
-                "email" => "required|email|unique:tb_usuarios,email",
-                "senha" => "required|string|min:6",
-                "cpf" => "required|string|unique:tb_usuarios,cpf"
-            ]);
+            $validated = $request->validated();
         // dd($validated);
 
             $usuario = $this->cadastroService->create($validated);
