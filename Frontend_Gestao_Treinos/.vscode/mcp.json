@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "Sentry": {
+      "url": "https://mcp.sentry.dev/mcp/rian-andrade/gestao-de-treinos-front",
+      "type": "http"
+    }
+  }
+}
